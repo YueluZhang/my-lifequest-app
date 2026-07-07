@@ -88,17 +88,23 @@ def record_transaction(
         description: Description of the transaction.
     """
     state = tool_context.state
-    real_balance = state.get("real_balance", 1000.0)
+    real_balance = state.get("real_balance", float(state.get("gold", 500.0)))
     real_transactions = state.get("real_transactions", [])
 
+    # Ensure amount is signed correctly based on entry_type or keep the sign if already negative
+    amt = amount
+    if entry_type.lower() == "expense":
+        if amt > 0:
+            amt = -amt
+    elif entry_type.lower() == "income":
+        if amt < 0:
+            amt = -amt
+
     # Update real balance (stored locally only)
-    if entry_type.lower() == "income":
-        real_balance += amount
-    else:
-        real_balance -= amount
+    real_balance += amt
 
     real_transactions.append(
-        {"amount": amount, "type": entry_type, "description": description}
+        {"amount": amt, "type": entry_type, "description": description}
     )
     state["real_balance"] = real_balance
     state["real_transactions"] = real_transactions

@@ -45,7 +45,7 @@ DEFAULT_STATE = {
     "gold": 500,
     "xp": 0,
     "quest_log": [],
-    "real_balance": 1000.0,  # Stored only locally in save.json
+    "real_balance": 500.0,  # Synchronized with starting gold
     "real_transactions": [],  # Stored only locally in save.json
     "budget": 1500,
     "deadlines": [],
