@@ -1,101 +1,70 @@
-# temp-lifequest
+# LifeQuest: An RPG-Style Personal Life Management Multi-Agent System
+> *Gamifying career search, scheduling, and budgeting with a secure, multi-agent AI assistant.*
 
-Simple ReAct agent
-Agent generated with `agents-cli` version `1.0.0`
+## 1. Problem Statement
+International students and early-career professionals face a highly complex set of stressors: managing visa and university deadlines, keeping track of tight personal budgets, and executing job application strategies. Each of these domains is critical, yet tracking them across separate spreadsheets and tools is overwhelming. When these stressors overlap—such as a major visa deadline coinciding with a low financial budget—stress compounds. There is a need for a unified, engaging, and secure assistant that can coordinate across these domains, highlight overlapping urgencies, and safeguard sensitive personal data.
 
-## Project Structure
+## 2. Solution Overview
+**LifeQuest** gamifies personal management into an RPG. The user acts as the player, whose life metrics are represented as **HP** (vitality/stress), **Gold** (financial health), **XP** (career progress), and **Quest Log** (active tasks). By wrapping real tasks (deadlines, budget transactions, job hunt activities) in RPG concepts, the system makes personal management engaging.
 
+## 3. Project Structure
 ```
-temp-lifequest/
-├── app/         # Core agent code
-│   ├── agent.py               # Main agent logic
-│   ├── fast_api_app.py        # FastAPI Backend server
-│   └── app_utils/             # App utilities and helpers
-├── tests/                     # Unit, integration, and load tests
-├── GEMINI.md                  # AI-assisted development guide
-└── pyproject.toml             # Project dependencies
+my-lifequest-app/
+├── app/
+│   ├── agent.py               # QuestMasterAgent and sub-agents (JobBoss, GoldKeeper, TimeGuardian)
+│   └── tools.py               # MCP Filesystem toolset, Fernet encryption, and callback handlers
+├── tests/                     # Unit, integration, and evaluation tests
+├── game_ui.html               # Gamified HTML/CSS/JS frontend client
+├── writeup.md                 # Kaggle project writeup
+├── pyproject.toml             # Dependencies (managed via uv)
+└── save.json                  # Local encrypted game state save file (Git-ignored)
 ```
 
-> 💡 **Tip:** Use [Antigravity CLI](https://antigravity.google/) for AI-assisted development - project context is pre-configured in `GEMINI.md`.
+## 4. Setup & Execution
 
-## Requirements
-
+### Prerequisites
 Before you begin, ensure you have:
-- **uv**: Python package manager (used for all dependency management in this project) - [Install](https://docs.astral.sh/uv/getting-started/installation/) ([add packages](https://docs.astral.sh/uv/concepts/dependencies/) with `uv add <package>`)
+- **uv**: Python package manager - [Install](https://docs.astral.sh/uv/getting-started/installation/)
 - **agents-cli**: Agents CLI - Install with `uv tool install google-agents-cli`
-- **Google Cloud SDK**: For GCP services - [Install](https://cloud.google.com/sdk/docs/install)
 
+### Installation Steps
 
-## Quick Start
+1.  **Install dependencies**:
+    ```bash
+    uvx google-agents-cli setup
+    agents-cli install
+    ```
+2.  **Configure the Data Security Key**:
+    This project uses at-rest Fernet symmetric encryption to secure your local `save.json` file. You must generate a key and save it to your `.env` file before running:
+    ```bash
+    # Generate a new Fernet key
+    uv run python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"
+    ```
+    Copy the output and append it to your `.env` file:
+    ```env
+    SAVE_ENCRYPTION_KEY=your_generated_key_here
+    GOOGLE_API_KEY=your_google_api_key_here
+    ```
+3.  **Run the local server**:
+    ```bash
+    agents-cli playground
+    ```
+4.  **Open the client**:
+    Open the local `game_ui.html` file in your default browser to start playing!
 
-1. Install `agents-cli` and its skills if not already installed:
-   ```bash
-   uvx google-agents-cli setup
-   ```
+## 5. Development Commands
 
-2. Install required packages:
-   ```bash
-   agents-cli install
-   ```
+| Command | Description |
+|---|---|
+| `agents-cli install` | Install dependencies using uv |
+| `agents-cli playground` | Launch local development environment (defaults to port `8080`) |
+| `agents-cli lint` | Run code quality checks |
+| `agents-cli eval` | Evaluate agent behavior (generate, grade, analyze, etc.) |
+| `uv run pytest tests/unit tests/integration` | Run unit and integration tests |
 
-3. **Configure the Data Security Key**:
-   This project uses at-rest Fernet symmetric encryption to secure your local `save.json` file. You must generate a key and save it to your `.env` file before running:
-   ```bash
-   # Generate a new Fernet key
-   uv run python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"
-   ```
-   Copy the output and append it to your `.env` file:
-   ```env
-   SAVE_ENCRYPTION_KEY=your_generated_key_here
-   ```
-
-Test the agent with a local web server:
-
-```bash
-agents-cli playground
-```
-
-You can also use features from the [ADK](https://adk.dev/) CLI with `uv run adk`.
-
-## Commands
-
-| Command              | Description                                                                                 |
-| -------------------- | ------------------------------------------------------------------------------------------- |
-| `agents-cli install` | Install dependencies using uv                                                         |
-| `agents-cli playground` | Launch local development environment                                                  |
-| `agents-cli lint`    | Run code quality checks                                                               |
-| `agents-cli eval`    | Evaluate agent behavior (generate, grade, analyze, and more — see `agents-cli eval --help`) |
-| `uv run pytest tests/unit tests/integration` | Run unit and integration tests                                                        || [A2A Inspector](https://github.com/a2aproject/a2a-inspector) | Launch A2A Protocol Inspector                                                        |
-
-## 🛠️ Project Management
-
-| Command | What It Does |
-|---------|--------------|
-| `agents-cli scaffold enhance` | Add CI/CD pipelines and Terraform infrastructure |
-| `agents-cli infra cicd` | One-command setup of entire CI/CD pipeline + infrastructure |
-| `agents-cli scaffold upgrade` | Auto-upgrade to latest version while preserving customizations |
-
----
-
-## Development
-
-Edit your agent logic in `app/agent.py` and test with `agents-cli playground` - it auto-reloads on save.
-
-## Deployment
+## 6. Deployment
 
 ```bash
 gcloud config set project <your-project-id>
 agents-cli deploy
 ```
-
-To add CI/CD and Terraform, run `agents-cli scaffold enhance`.
-To set up your production infrastructure, run `agents-cli infra cicd`.
-
-## Observability
-
-Built-in telemetry exports to Cloud Trace, BigQuery, and Cloud Logging.
-
-## A2A Inspector
-
-This agent supports the [A2A Protocol](https://a2a-protocol.org/). Use the [A2A Inspector](https://github.com/a2aproject/a2a-inspector) to test interoperability.
-See the [A2A Inspector docs](https://github.com/a2aproject/a2a-inspector) for details.
