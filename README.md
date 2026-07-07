@@ -70,7 +70,7 @@ Before you begin, ensure you have:
 
 The backend is deployed to Google Cloud Run and the frontend is hosted on Firebase Hosting:
 * [Backend API](https://temp-lifequest-213291527780.us-east1.run.app)
-* [Frontend UI (Live Demo)](https://my-lifequest-app.web.app)
+* [Frontend UI](https://my-lifequest-app.web.app)
 
 To deploy updates:
 ```bash
