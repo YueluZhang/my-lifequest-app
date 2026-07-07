@@ -22,6 +22,8 @@ if not encryption_key:
         "Missing SAVE_ENCRYPTION_KEY environment variable. Save file encryption cannot proceed."
     )
 
+encryption_key = encryption_key.strip()
+
 try:
     cipher = Fernet(encryption_key.encode())
 except Exception as e:
