@@ -4,6 +4,7 @@
 *   **GitHub Repository**: [YueluZhang/my-lifequest-app](https://github.com/YueluZhang/my-lifequest-app)
 *   **Live Frontend UI**: [my-lifequest-app.web.app](https://my-lifequest-app.web.app)
 *   **Live Backend API**: [Cloud Run service](https://temp-lifequest-213291527780.us-east1.run.app)
+*   **Video**: [Watch on YouTube](https://youtu.be/A6E7dlGBKH8)
 
 ## 1. Problem Statement
 International students and early-career professionals face a highly complex set of stressors: managing visa and university deadlines, keeping track of tight personal budgets, and executing job application strategies. Each of these domains is critical, yet tracking them across separate spreadsheets and tools is overwhelming. When these stressors overlap—such as a major visa deadline coinciding with a low financial budget—stress compounds. There is a need for a unified, engaging, and secure assistant that can coordinate across these domains, highlight overlapping urgencies, and safeguard sensitive personal data.
