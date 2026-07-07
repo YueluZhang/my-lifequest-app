@@ -64,7 +64,12 @@ Before you begin, ensure you have:
 
 ## 6. Deployment
 
+The backend is deployed to Google Cloud Run and the frontend is hosted on Firebase Hosting:
+*   **Backend API URL**: `https://temp-lifequest-213291527780.us-east1.run.app`
+*   **Frontend UI URL**: `https://my-lifequest-app.web.app`
+
+To deploy updates:
 ```bash
-gcloud config set project <your-project-id>
+gcloud config set project my-lifequest-app
 agents-cli deploy
 ```
