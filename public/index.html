@@ -249,6 +249,7 @@
       grid-template-columns: 1fr 1fr;
       gap: 12px;
       margin-bottom: 20px;
+      position: relative;
     }
 
     .quest-btn {
@@ -368,6 +369,7 @@
       border: 2px solid var(--border);
       border-radius: 20px;
       padding: 6px;
+      position: relative;
     }
 
     .log-inner {
@@ -421,6 +423,32 @@
       animation: fadeIn 0.3s forwards;
     }
 
+    .log-bubble p {
+      margin: 0 0 6px;
+    }
+
+    .log-bubble p:last-child {
+      margin-bottom: 0;
+    }
+
+    .log-bubble .log-list {
+      margin: 4px 0 6px;
+      padding-left: 18px;
+    }
+
+    .log-bubble .log-list li {
+      margin-bottom: 3px;
+    }
+
+    .log-bubble .log-list:last-child {
+      margin-bottom: 0;
+    }
+
+    .log-bubble strong {
+      color: var(--pink-d);
+      font-weight: 700;
+    }
+
     @keyframes fadeIn {
       to {
         opacity: 1;
@@ -439,27 +467,126 @@
       padding: 4px 12px;
     }
 
-    #ears {
-      transform-origin: 50px 58px;
+    /* month switcher */
+    .month-bar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 14px;
     }
 
-    #ears.bounce {
-      animation: ears-bounce-anim 0.4s ease-out;
+    .month-arrow {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 2px solid var(--border);
+      background: var(--panel);
+      color: var(--pink-d);
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
-    @keyframes ears-bounce-anim {
+    .month-arrow:hover {
+      border-color: var(--pink-d);
+    }
+
+    .month-center {
+      text-align: center;
+    }
+
+    .month-label {
+      font-size: 16px;
+      color: var(--ink);
+    }
+
+    .today-label {
+      display: block;
+      font-size: 11px;
+      opacity: 0.6;
+      margin-top: 2px;
+    }
+
+    /* budget control */
+    .budget-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 18px;
+      background: var(--panel);
+      border: 2px solid var(--lav);
+      border-radius: 14px;
+      padding: 10px 14px;
+    }
+
+    #budget-input {
+      flex: 1;
+      background: var(--cream);
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      padding: 6px 10px;
+      font-family: 'Quicksand', sans-serif;
+      font-size: 13px;
+      color: var(--ink);
+    }
+
+    .budget-btn {
+      border: none;
+      border-radius: 10px;
+      background: var(--lav-d);
+      color: white;
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 700;
+      padding: 8px 14px;
+      cursor: pointer;
+    }
+
+    /* extra companion critters */
+    .critter {
+      position: absolute;
+      pointer-events: none;
+    }
+
+    .bird-wrap {
+      top: -14px;
+      right: 18px;
+      animation: bob 2.4s ease-in-out infinite;
+    }
+
+    .hamster-wrap {
+      bottom: -6px;
+      left: -6px;
+      animation: peek 5s ease-in-out infinite;
+    }
+
+    @keyframes bob {
 
       0%,
       100% {
-        transform: translateY(0) scaleY(1);
+        transform: translateY(0);
       }
 
-      40% {
-        transform: translateY(-5px) scaleY(1.2);
+      50% {
+        transform: translateY(-4px);
+      }
+    }
+
+    @keyframes peek {
+
+      0%,
+      70%,
+      100% {
+        transform: translateY(10px);
+        opacity: 0;
       }
 
-      70% {
-        transform: translateY(1px) scaleY(0.95);
+      80%,
+      90% {
+        transform: translateY(0);
+        opacity: 1;
       }
     }
   </style>
@@ -472,12 +599,10 @@
       <div class="mascot-wrap" id="mascot-wrap">
         <svg viewBox="0 0 100 100" width="72" height="72" id="mascot">
           <ellipse cx="50" cy="58" rx="38" ry="32" fill="var(--capy)" />
-          <g id="ears">
-            <circle cx="20" cy="30" r="11" fill="var(--capy)" />
-            <circle cx="80" cy="30" r="11" fill="var(--capy)" />
-            <circle cx="20" cy="31" r="5" fill="var(--capy-d)" />
-            <circle cx="80" cy="31" r="5" fill="var(--capy-d)" />
-          </g>
+          <circle cx="20" cy="30" r="11" fill="var(--capy)" />
+          <circle cx="80" cy="30" r="11" fill="var(--capy)" />
+          <circle cx="20" cy="31" r="5" fill="var(--capy-d)" />
+          <circle cx="80" cy="31" r="5" fill="var(--capy-d)" />
           <ellipse cx="30" cy="66" rx="7" ry="5" fill="#FFC9D6" opacity="0.7" />
           <ellipse cx="70" cy="66" rx="7" ry="5" fill="#FFC9D6" opacity="0.7" />
           <ellipse cx="50" cy="70" rx="10" ry="7" fill="#C99A66" />
@@ -533,6 +658,21 @@
       </div>
     </div>
 
+    <div class="month-bar">
+      <button class="month-arrow" onclick="shiftMonth(-1)">&#8249;</button>
+      <div class="month-center">
+        <span class="cute month-label" id="month-label">July 2026</span>
+        <span class="today-label" id="today-label">Today: --</span>
+      </div>
+      <button class="month-arrow" onclick="shiftMonth(1)">&#8250;</button>
+    </div>
+
+    <div class="budget-row">
+      <span class="stat-label" style="width:auto">Monthly budget</span>
+      <input type="number" id="budget-input" placeholder="1500" min="0" step="50">
+      <button class="budget-btn" onclick="updateBudget()">Update</button>
+    </div>
+
     <div class="stats">
       <div class="stat-row">
         <span class="stat-label">HP</span>
@@ -574,11 +714,32 @@
         <span class="tag">QUEST MASTER</span>
         <span class="title">Check today's quest board</span>
       </button>
+      <div class="critter hamster-wrap">
+        <svg width="34" height="26" viewBox="0 0 34 26">
+          <ellipse cx="17" cy="18" rx="15" ry="9" fill="#E8C896" />
+          <circle cx="8" cy="10" r="6" fill="#E8C896" />
+          <circle cx="26" cy="10" r="6" fill="#E8C896" />
+          <circle cx="8" cy="10" r="2.6" fill="#F3DBB0" />
+          <circle cx="26" cy="10" r="2.6" fill="#F3DBB0" />
+          <circle cx="11" cy="15" r="1.4" fill="#5C4530" />
+          <circle cx="23" cy="15" r="1.4" fill="#5C4530" />
+          <ellipse cx="17" cy="20" rx="2" ry="1.4" fill="#B98F5C" />
+        </svg>
+      </div>
     </div>
 
     <div id="mini-form"></div>
 
     <div class="log-box">
+      <div class="critter bird-wrap">
+        <svg width="30" height="26" viewBox="0 0 30 26">
+          <ellipse cx="14" cy="16" rx="10" ry="8" fill="var(--mint-d)" />
+          <circle cx="22" cy="10" r="6" fill="var(--mint-d)" />
+          <circle cx="24" cy="8" r="1.4" fill="#2C2C2A" />
+          <path d="M28 10 L32 11 L28 12 Z" fill="var(--gold-a)" />
+          <path d="M6 16 L0 14 L6 20 Z" fill="var(--mint)" />
+        </svg>
+      </div>
       <div class="log-inner" id="log">
         <div class="log-empty">Tap a button above to start today's quest~</div>
       </div>
@@ -590,13 +751,75 @@
     // - "agents-cli playground" (agy) defaults to port 8080
     // - plain "adk web" / "adk api_server" defaults to port 8000
     // Change this to match whichever one you're actually running.
-    const API_BASE = "https://temp-lifequest-213291527780.us-east1.run.app";
+    const API_BASE = "http://127.0.0.1:8000";
     const APP_NAME = "app";           // must match your agent folder name
     const USER_ID = "player1";
     const SESSION_ID = "session1";
 
     let prevHp = null;
     let prevLevel = null;
+    let monthOffset = 0; // months relative to the real current month
+
+    /* ---------- lightweight markdown-ish rendering for agent replies ---------- */
+    function formatMessage(rawText) {
+      // The agent's replies often end with a "=== PLAYER STATS ===" block.
+      // That's redundant since the HP/Gold/XP bars above already show the
+      // live values, so strip it out to reduce clutter in the log.
+      let cleaned = rawText.replace(/=+\s*PLAYER STATS\s*=+[\s\S]*?=+/i, '').trim();
+
+      // Escape HTML first so we never inject raw markup from the model.
+      const esc = cleaned
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+
+      // **bold** -> <strong>
+      let html = esc.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+
+      // Turn "* " bullet lines into a real <ul><li> list; everything else
+      // becomes its own paragraph so multi-line replies get visual breathing
+      // room instead of running together.
+      const lines = html.split(/\n/);
+      const out = [];
+      let inList = false;
+      for (const rawLine of lines) {
+        const line = rawLine.trim();
+        if (/^\*\s+/.test(line)) {
+          if (!inList) { out.push('<ul class="log-list">'); inList = true; }
+          out.push('<li>' + line.replace(/^\*\s+/, '') + '</li>');
+        } else {
+          if (inList) { out.push('</ul>'); inList = false; }
+          if (line) out.push('<p>' + line + '</p>');
+        }
+      }
+      if (inList) out.push('</ul>');
+      return out.join('') || esc;
+    }
+
+    /* ---------- month switcher (display only; TimeGuardian does the filtering) ---------- */
+    function formatMonth(offset) {
+      const d = new Date();
+      d.setDate(1);
+      d.setMonth(d.getMonth() + offset);
+      return d.toLocaleString('en-US', { month: 'long', year: 'numeric' });
+    }
+    function renderMonthBar() {
+      document.getElementById('month-label').textContent = formatMonth(monthOffset);
+      const today = new Date();
+      document.getElementById('today-label').textContent =
+        'Today: ' + today.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    }
+    function shiftMonth(delta) {
+      monthOffset += delta;
+      renderMonthBar();
+    }
+
+    /* ---------- monthly budget control ---------- */
+    function updateBudget() {
+      const val = document.getElementById('budget-input').value;
+      if (!val) return;
+      sendToAgent(`Set my monthly budget to $${val}.`, "gold", "\ud83c\udf30");
+    }
 
     const moodLines = {
       happy: ["Let's get after it today!", "Feeling great!", "Onward!"],
@@ -730,23 +953,22 @@
       sendToAgent(message, cfg.badge, cfg.icon);
     }
     function checkBoard() {
-      sendToAgent("Check today's quest board: summarize any pending deadlines and low-gold warnings.", "you", "\ud83c\udf43");
+      const monthText = formatMonth(monthOffset);
+      sendToAgent(
+        `Check my quest board for ${monthText}: summarize any pending deadlines and low-gold warnings for that month.`,
+        "you", "\ud83c\udf43"
+      );
     }
 
     /* ---------- quest log rendering ---------- */
-    function appendLog(badgeClass, icon, text) {
-      const ears = document.getElementById("ears");
-      if (ears) {
-        ears.classList.remove("bounce");
-        void ears.offsetWidth;
-        ears.classList.add("bounce");
-      }
+    function appendLog(badgeClass, icon, text, raw) {
       const log = document.getElementById("log");
       const empty = log.querySelector(".log-empty");
       if (empty) empty.remove();
       const entry = document.createElement("div");
       entry.className = "log-entry";
-      entry.innerHTML = `<div class="badge ${badgeClass}">${icon}</div><div class="log-bubble">${text}</div>`;
+      const bubbleContent = raw ? text : formatMessage(text);
+      entry.innerHTML = `<div class="badge ${badgeClass}">${icon}</div><div class="log-bubble">${bubbleContent}</div>`;
       log.appendChild(entry);
       log.scrollTop = log.scrollHeight;
     }
@@ -798,7 +1020,16 @@
         refreshStats();
       } catch (err) {
         removeLoading();
-        appendLog("you", "⚠️", `Oh no... I tried my best, but my little capybara paws couldn't reach the server. Let's make sure the backend is running properly!<br><br><details style="font-size:11px;opacity:0.8;margin-top:6px;cursor:pointer;"><summary>Click for technical detail</summary><pre style="white-space:pre-wrap;margin:4px 0 0 0;">URL: ${API_BASE}/run\nError: ${err.message || err}</pre></details>`);
+        appendLog(
+          "you",
+          "\ud83d\udca4",
+          `Zzz... the capybara didn't catch that one.
+       <details style="margin-top:4px;font-size:11px;opacity:0.6;cursor:pointer">
+         <summary>What happened?</summary>
+         Couldn't reach the backend. Make sure the ADK server is running and CORS is allowed.
+       </details>`,
+          true
+        );
         console.error(err);
       }
     }
@@ -831,6 +1062,7 @@
       } catch (e) { }
     }
 
+    renderMonthBar();
     ensureSession().then(refreshStats);
   </script>
 </body>
